@@ -1,2 +1,7 @@
 
 .idea/
+.settings
+.eclipse
+.classpath
+.project
+bin/
