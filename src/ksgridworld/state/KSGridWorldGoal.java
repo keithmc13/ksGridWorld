@@ -7,8 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class KSGridWorldGoal extends KSLocalObject {
-    private static final String CLASS_NAME = "KSGoal";
+    public static final String CLASS_NAME = "KSGoal";
     public static final String ATTR_COLOR = "color";
+
     public KSGridWorldGoal(String name, int x, int y, String color){
         super(name, x, y);
         super.set(ATTR_COLOR, color);

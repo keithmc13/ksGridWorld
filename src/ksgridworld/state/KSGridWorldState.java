@@ -7,6 +7,8 @@ import burlap.mdp.core.state.MutableState;
 import burlap.mdp.core.state.State;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class KSGridWorldState implements MutableOOState {
@@ -21,6 +23,8 @@ public class KSGridWorldState implements MutableOOState {
 		this.agent = agent;
 		this.blocks = blocks;
 		this.goal = goal;
+
+
 	}
 
 
@@ -52,12 +56,25 @@ public class KSGridWorldState implements MutableOOState {
 
 	@Override
 	public List<ObjectInstance> objects() {
-		return null;
+        List<ObjectInstance> objects = new ArrayList<>();
+        objects.add(agent);
+        objects.add(goal);
+        objects.addAll(blocks);
+		return objects;
 	}
 
 	@Override
 	public List<ObjectInstance> objectsOfClass(String s) {
-		return null;
+	    List<ObjectInstance> objectsOfClass = new ArrayList<>();
+	    switch(s){
+	        case (KSGridWorldBlock.CLASS_NAME):
+                objectsOfClass.addAll(blocks);  break;
+            case (KSGridWorldAgent.CLASS_NAME):
+                objectsOfClass.add(agent);      break;
+            case (KSGridWorldGoal .CLASS_NAME):
+                objectsOfClass.add(goal);       break;
+        }
+        return objectsOfClass;
 	}
 
 	@Override

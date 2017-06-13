@@ -6,7 +6,7 @@ import burlap.mdp.core.state.State;
 
 public class KSGridWorldAgent extends KSLocalObject {
     //TODO move the classname to domain
-    private static final String CLASS_NAME = "KSAgent";
+    public static final String CLASS_NAME = "KSAgent";
 
     public KSGridWorldAgent(String name, int x, int y){
         super(name, x, y);
