@@ -1,24 +1,26 @@
 package ksgridworld.state;
 
-import cleanup.Cleanup;
-import utils.MutableObject;
-import utils.MutableObjectInstance;
- 
-public class KSGridWorldBlock extends MutableObject implements MutableObjectInstance {
+import burlap.mdp.core.oo.state.ObjectInstance;
+import burlap.mdp.core.state.State;
 
-	private String name;
-	
-	public KSGridWorldBlock(){
-		
-		
+public class KSGridWorldBlock extends KSLocalObject {
+	private static final String CLASS_NAME = "KSBlock";
+	public KSGridWorldBlock(String name, int x, int y){
+		super(name, x, y);
 	}
-	
-	
-	
-	
-	public KSGridWorldBlock(int x, int y){
-		
-		this(KSGridWorld.CLASS_BLOCK, (Object)x, (Object)y, (Object)"chair", (Object)"yellow");
+
+	@Override
+	public String className() {
+		return CLASS_NAME;
 	}
-	
+
+	@Override
+	public ObjectInstance copyWithName(String s) {
+		return new KSGridWorldBlock(s, super.getX(), super.getY());
+	}
+
+	@Override
+	public State copy() {
+		return copyWithName(super.name);
+	}
 }
