@@ -4,29 +4,63 @@ import java.util.Arrays;
 import java.util.List;
 
 import burlap.mdp.core.oo.state.ObjectInstance;
+import burlap.mdp.core.state.State;
 import burlap.mdp.core.state.annotations.DeepCopyState;
 import ksgridworld.KSGridWorldDomain;
 import utils.MutableObject;
 
 public class KSGridWorldAgent extends MutableObject {
+    //TODO move the classname to domain
+    private static final String CLASS_NAME = "KSAgent";
+    private final String name;
 
-	private String name;
-	
-	public KSGridWorldAgent(){
-		
-	}
-	
-	private final static List<Object> keys = Arrays.<Object>asList(
-			KSGridWorldAgent.ATT_X, 
-			KSGridWorldAgent.ATT_Y, 
-			KSGridWorldAgent.ATT_DIR, 
-			KSGridWorldAgent.SHAPE);
+	private KSGridWorldAgent(String name){
+        this.name = name;
+    }
 
-	//need to give the agent a set of coordinates when initializing from the constructor
-	public KSGridWorldAgent(int x, int y, String direction){
-		
-	}
+    public KSGridWorldAgent(String name, int x, int y){
+    this(name);
+    super.set(KSGridWorldDomain.ATT_X, x);
+    super.set(KSGridWorldDomain.ATT_Y, y);
+    }
 	
+	private final static List<Object> keys = Arrays.asList(
+			KSGridWorldDomain.ATT_X,
+			KSGridWorldDomain.ATT_Y);
+
+    @Override
+    public String className(){
+       return CLASS_NAME;
+    }
+
+    @Override
+    public String name(){
+        return name;
+    }
+
+    @Override
+    public List<Object> variableKeys(){
+        return keys;
+    }
+
+    @Override
+    public ObjectInstance copyWithName(String name) {
+        return new KSGridWorldAgent(
+                name,
+                (Integer)super.get(KSGridWorldDomain.ATT_X),
+                (Integer)super.get(KSGridWorldDomain.ATT_Y));
+    }
+
+    @Override
+    public State copy(){
+        return copyWithName(this.name);
+    }
+
+    @Override
+	public boolean equals(Object other){
+        //TODO equals
+        return false;
+    }
 	
 	
 	
