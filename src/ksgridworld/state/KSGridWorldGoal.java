@@ -29,7 +29,7 @@ public class KSGridWorldGoal extends KSLocalObject {
     }
 
     @Override
-    public ObjectInstance copyWithName(String s) {
+    public KSGridWorldGoal copyWithName(String s) {
         return new KSGridWorldGoal(s, super.getX(), super.getY(),this.getColor() );
     }
 
@@ -38,7 +38,7 @@ public class KSGridWorldGoal extends KSLocalObject {
     }
 
     @Override
-    public State copy() {
+    public KSGridWorldGoal copy() {
         return copyWithName(super.name);
     }
 }

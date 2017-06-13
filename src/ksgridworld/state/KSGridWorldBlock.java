@@ -15,12 +15,12 @@ public class KSGridWorldBlock extends KSLocalObject {
 	}
 
 	@Override
-	public ObjectInstance copyWithName(String s) {
+	public KSGridWorldBlock copyWithName(String s) {
 		return new KSGridWorldBlock(s, super.getX(), super.getY());
 	}
 
 	@Override
-	public State copy() {
+	public KSGridWorldBlock copy() {
 		return copyWithName(super.name);
 	}
 }

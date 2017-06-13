@@ -18,12 +18,12 @@ public class KSGridWorldAgent extends KSLocalObject {
     }
 
     @Override
-    public ObjectInstance copyWithName(String name) {
+    public KSGridWorldAgent copyWithName(String name) {
         return new KSGridWorldAgent(name, super.getX(), super.getY());
     }
 
     @Override
-    public State copy(){
+    public KSGridWorldAgent copy(){
         return copyWithName(this.name);
     }
 
