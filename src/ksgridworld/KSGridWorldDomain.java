@@ -1,5 +1,7 @@
 package ksgridworld;
 
+
+//TODO refactor imports
 import burlap.behavior.policy.Policy;
 import burlap.behavior.policy.PolicyUtils;
 import burlap.behavior.singleagent.Episode;
@@ -40,14 +42,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import amdp.cleanup.CleanupDomain;
-
 
 public class KSGridWorldDomain implements DomainGenerator {
 
 	public static final String ATT_X = "x";
 	public static final String ATT_Y = "y";
-	
+
+	//TODO get rid of deprecated keys and add new ones
 	public static final String ATT_DIR = "direction";
 	
 	public static final String CLASS_AGENT = "agent";
@@ -89,9 +90,9 @@ public class KSGridWorldDomain implements DomainGenerator {
 	//generate Object-Oriented Single Agent Domain
 	@Override
 	public OOSADomain generateDomain() {
-		// TODO Auto-generated method stub
-		KSGridWorldDomain d;
-		OOSADomain ksd = d.generateDomain();
+		// TODO implement
+//		KSGridWorldDomain d;
+//		OOSADomain ksd = d.generateDomain();
 		
 		
 		
@@ -111,9 +112,9 @@ public class KSGridWorldDomain implements DomainGenerator {
 		
 		
 		
-		
-		
-		return  ksd;
+
+
+		return  null;
 	}
 
 	public RewardFunction getRf() {
@@ -139,34 +140,33 @@ public class KSGridWorldDomain implements DomainGenerator {
 	 * -Goal <X, Y, Color>
 	 * 
 	 */
-	
-	
-	
-	
-}
-
-
-public static class KSRF implements RewardFunction {
-	
-	
-}
 
 
 
-public static class KSTF implements TerminalFunction {
-	
-	
-}
+	public static class KSRF implements RewardFunction {
+
+
+		@Override
+		public double reward(State state, Action action, State state1) {
+			//TODO implement
+			return 0;
+		}
+	}
 
 
 
+	public static class KSTF implements TerminalFunction {
 
 
-
-public static void main(String [] args){
-	
-	KSGridWorldDomain dgen = new KSGridWorldDomain();
-	OOSADomain domain = dgen.generateDomain();
+		@Override
+		public boolean isTerminal(State state) {
+			//TODO implement
+			return false;
+		}
+	}
 	
 }
+
+
+
 
