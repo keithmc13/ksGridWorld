@@ -40,21 +40,96 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import amdp.cleanup.CleanupDomain;
+
 
 public class KSGridWorldDomain implements DomainGenerator {
 
-	public static final String VAR_X = "x";
-	public static final String VAR_Y = "y";
+	public static final String ATT_X = "x";
+	public static final String ATT_Y = "y";
+	
+	public static final String ATT_DIR = "direction";
+	
+	public static final String CLASS_AGENT = "agent";
+	public static final String CLASS_BLOCK = "block";
+	
 	public static final String ACTION_NORTH = "north";
 	public static final String ACTION_SOUTH = "south";
 	public static final String ACTION_EAST = "east";
 	public static final String ACTION_WEST = "west";
 	
+	/*
+	 * In case we add diagonal directional movements
+	 * 
+	 * public static final String ACTION_NORTHEAST = "northeast";
+	 * public static final String ACTION_NORTHEAST = "northwest";
+	 * public static final String ACTION_SOUTHEAST = "southeast";
+	 * public static final String ACTION_SOUTHEAST = "southwest";
+	 * 
+	 */
 	
+	
+	//propositional functions
+	
+	
+	//reward function 
+	private RewardFunction rf;
+	//terminal function
+	private TerminalFunction tf;
+	
+	public KSGridWorldDomain(RewardFunction rf, TerminalFunction tf){
+		
+		this.rf = rf;
+		this.tf = tf;
+	}
+	
+	public KSGridWorldDomain(){};
+	
+	
+	//generate Object-Oriented Single Agent Domain
 	@Override
-	public Domain generateDomain() {
+	public OOSADomain generateDomain() {
 		// TODO Auto-generated method stub
-		return null;
+		KSGridWorldDomain d;
+		OOSADomain ksd = d.generateDomain();
+		
+		
+		
+		
+		
+		
+		if(rf == null){
+			
+			rf = new UniformCostRF();
+		}
+		
+		if(tf == null){
+			
+			tf = new NullTermination();
+		}
+		
+		
+		
+		
+		
+		
+		return  ksd;
+	}
+
+	public RewardFunction getRf() {
+		return rf;
+	}
+
+	public void setRf(RewardFunction rf) {
+		this.rf = rf;
+	}
+
+	public TerminalFunction getTf() {
+		return tf;
+	}
+
+	public void setTf(TerminalFunction tf) {
+		this.tf = tf;
 	}
 	
 	/*
@@ -69,3 +144,29 @@ public class KSGridWorldDomain implements DomainGenerator {
 	
 	
 }
+
+
+public static class KSRF implements RewardFunction {
+	
+	
+}
+
+
+
+public static class KSTF implements TerminalFunction {
+	
+	
+}
+
+
+
+
+
+
+public static void main(String [] args){
+	
+	KSGridWorldDomain dgen = new KSGridWorldDomain();
+	OOSADomain domain = dgen.generateDomain();
+	
+}
+
