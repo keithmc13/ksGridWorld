@@ -8,14 +8,14 @@ import ksgridworld.KSGridWorldDomain;
 import ksgridworld.state.KSGridWorldGoal;
 
 
-public class ksGridWorldRF extends GoalBasedRF {
+public class KSGridWorldRF extends GoalBasedRF {
 
 	private double goalReward;
 	private double moveReward;
 	private double no_opReward;
 
-	public ksGridWorldRF(KSGridWorldGoal goal, double rewardGoal, double rewardDefault, double rewardNoop, double rewardMove) {
-		super((StateConditionTest) goal, rewardGoal, rewardDefault);
+	public KSGridWorldRF(StateConditionTest atGoal, double rewardGoal, double rewardDefault, double rewardNoop, double rewardMove) {
+		super(atGoal, rewardGoal, rewardDefault);
 		this.goalReward = rewardGoal;
 		this.no_opReward = rewardNoop;
 		this.moveReward = rewardMove;
@@ -31,23 +31,11 @@ public class ksGridWorldRF extends GoalBasedRF {
 	
 	@Override
 	public double reward(State s, Action a, State sprime) {
-		double superR = super.reward(s, a, sprime);
-		double r = superR;
-		if(a.actionName().equals(KSGridWorldDomain.ACTION_NORTH)){
-			r += moveReward;
-		}
-		else if(a.actionName().equals(KSGridWorldDomain.ACTION_SOUTH)){
-			r += moveReward;
-		}
-		else if(a.actionName().equals(KSGridWorldDomain.ACTION_EAST)){
-			r += moveReward;
-		}
-		else if(a.actionName().equals(KSGridWorldDomain.ACTION_WEST)){
-			r += moveReward;
-		}
-		if (s.equals(sprime)) {
+		double r = super.reward(s, a, sprime);
+		if (s.equals(sprime))
 			r += no_opReward;
-		}
+		else
+			r += moveReward;
 		return r;
 	}
 	
