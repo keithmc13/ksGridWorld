@@ -1,7 +1,5 @@
 package ksgridworld.state;
 
-import burlap.mdp.core.oo.state.ObjectInstance;
-import burlap.mdp.core.state.State;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,4 +40,5 @@ public class KSGridWorldGoal extends KSLocalObject {
     public KSGridWorldGoal copy() {
         return copyWithName(super.name);
     }
+
 }

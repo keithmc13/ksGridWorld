@@ -1,8 +1,5 @@
 package ksgridworld.state;
 
-import burlap.mdp.core.oo.state.ObjectInstance;
-import burlap.mdp.core.state.State;
-
 
 public class KSGridWorldAgent extends KSLocalObject {
     //TODO move the classname to domain

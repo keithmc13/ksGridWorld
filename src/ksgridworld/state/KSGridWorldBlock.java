@@ -1,7 +1,5 @@
 package ksgridworld.state;
 
-import burlap.mdp.core.oo.state.ObjectInstance;
-import burlap.mdp.core.state.State;
 
 public class KSGridWorldBlock extends KSLocalObject {
 	public static final String CLASS_NAME = "KSBlock";

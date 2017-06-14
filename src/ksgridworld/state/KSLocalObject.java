@@ -30,11 +30,11 @@ public abstract class KSLocalObject extends MutableObject {
         return this.name;
     }
 
-    protected int getX(){
+    public int getX(){
         return (Integer)super.get(KSGridWorldDomain.ATT_X);
     }
 
-    protected int getY(){
+    public int getY(){
         return (Integer)super.get(KSGridWorldDomain.ATT_Y);
     }
 }

@@ -4,10 +4,7 @@ import burlap.mdp.core.oo.state.MutableOOState;
 import burlap.mdp.core.oo.state.OOStateUtilities;
 import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.oo.state.exceptions.UnknownClassException;
-import burlap.mdp.core.state.MutableState;
-import burlap.mdp.core.state.State;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -33,7 +30,7 @@ public class KSGridWorldState implements MutableOOState {
 
 
 	@Override
-	public MutableOOState addObject(ObjectInstance o) {
+	public KSGridWorldState addObject(ObjectInstance o) {
 	    if(o instanceof KSGridWorldBlock)
             this.blocks.add((KSGridWorldBlock)o);
 	    else if(o instanceof KSGridWorldAgent)
@@ -48,7 +45,7 @@ public class KSGridWorldState implements MutableOOState {
 
 	@Override
     //be careful with removing the agent and goal and stuff
-	public MutableOOState removeObject(String s) {
+	public KSGridWorldState removeObject(String s) {
 	    if(s.equals(agent.name()))
 	        agent = null;
 	    else if(s.equals(goal.name()))
@@ -63,7 +60,7 @@ public class KSGridWorldState implements MutableOOState {
 	}
 
 	@Override
-	public MutableOOState renameObject(String s, String s1) {
+	public KSGridWorldState renameObject(String s, String s1) {
 		ObjectInstance o = this.object(s);
 		o = o.copyWithName(s1);
 		this.removeObject(s1);
@@ -121,7 +118,7 @@ public class KSGridWorldState implements MutableOOState {
 	@Override
     //I'd rather suppress just the one List<> cast, not sure how
     @SuppressWarnings("unchecked")
-    public MutableState set(Object key, Object value) {
+    public KSGridWorldState set(Object key, Object value) {
 
 	    if(key.equals(KSGridWorldAgent.CLASS_NAME))
 	        agent =(KSGridWorldAgent)value;
@@ -156,7 +153,7 @@ public class KSGridWorldState implements MutableOOState {
 	}
 
 	@Override
-	public State copy() {
+	public KSGridWorldState copy() {
 	    List<KSGridWorldBlock> newblocks = new ArrayList<>();
 	    for(KSGridWorldBlock b : blocks)
 	        newblocks.add(b.copy());
