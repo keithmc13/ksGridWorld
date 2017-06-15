@@ -10,15 +10,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static ksgridworld.KSGridWorldDomain.*;
+
 public class KSGridWorldState implements MutableOOState {
 
 	private KSGridWorldAgent agent;
 	private List<KSGridWorldBlock> blocks;
 	private KSGridWorldGoal goal;
-    private static final List<Object> keys= Arrays.asList(
-            KSGridWorldGoal.CLASS_NAME,
-            KSGridWorldBlock.CLASS_NAME,
-            KSGridWorldAgent.CLASS_NAME);
+
+    private static final List<Object> keys=
+			Arrays.asList(CLASS_GOAL, CLASS_AGENT, CLASS_BLOCK);
 
 	public KSGridWorldState(KSGridWorldAgent agent,
                             List<KSGridWorldBlock> blocks,
@@ -46,6 +47,7 @@ public class KSGridWorldState implements MutableOOState {
 	@Override
     //be careful with removing the agent and goal and stuff
 	public KSGridWorldState removeObject(String s) {
+
 	    if(s.equals(agent.name()))
 	        agent = null;
 	    else if(s.equals(goal.name()))
@@ -64,11 +66,11 @@ public class KSGridWorldState implements MutableOOState {
 		ObjectInstance o = this.object(s);
 		o = o.copyWithName(s1);
 		this.removeObject(s1);
+
 	    return this.addObject(o);
 	}
 
 	@Override
-
 	public int numObjects() {
 	    int count = 0;
 	    if(agent!=null)count++;
@@ -82,14 +84,12 @@ public class KSGridWorldState implements MutableOOState {
 	        return agent;
 	    else if(goal!=null&&s.equals(goal.name()))
 	        return goal;
-	    else{
+	    else
 	        for(KSGridWorldBlock b : blocks)
 	            if(s.equals(b.name()))
 	                return b;
-        }
-        //not sure if return null makes sense here, would rather throw error
-		return null;
-	    //throw new ObjectNotFoundException("Name given wasn't used");
+
+        throw new ObjectNotFoundException("No object of name: "+s+" found");
 	}
 
 	@Override
@@ -105,12 +105,13 @@ public class KSGridWorldState implements MutableOOState {
 	public List<ObjectInstance> objectsOfClass(String s) {
 	    List<ObjectInstance> objectsOfClass = new ArrayList<>();
 	    switch(s){
-	        case (KSGridWorldBlock.CLASS_NAME):
-                objectsOfClass.addAll(blocks);  break;
-            case (KSGridWorldAgent.CLASS_NAME):
-                objectsOfClass.add(agent);      break;
-            case (KSGridWorldGoal .CLASS_NAME):
-                objectsOfClass.add(goal);       break;
+            case(CLASS_AGENT):
+                objectsOfClass.add(agent);    break;
+            case (CLASS_GOAL):
+                objectsOfClass.add(goal);     break;
+	        case(CLASS_BLOCK):
+                objectsOfClass.addAll(blocks);break;
+
         }
         return objectsOfClass;
 	}
@@ -119,17 +120,17 @@ public class KSGridWorldState implements MutableOOState {
     //I'd rather suppress just the one List<> cast, not sure how
     @SuppressWarnings("unchecked")
     public KSGridWorldState set(Object key, Object value) {
-
-	    if(key.equals(KSGridWorldAgent.CLASS_NAME))
-	        agent =(KSGridWorldAgent)value;
-        else if(key.equals(KSGridWorldGoal.CLASS_NAME))
-            goal = (KSGridWorldGoal)value;
-        else if(key.equals(KSGridWorldBlock.CLASS_NAME))
-            blocks = (List<KSGridWorldBlock>)value;
-
-        //again, another null?
-        return null;
-        //throw new ObjectNotFoundException("key given not in state keys");
+	    //so are keys always strings? I've never seen one that wasn't
+		String immutableKey = (String)key;
+		switch(immutableKey) {
+			case(CLASS_AGENT):
+				agent  = (KSGridWorldAgent)value;break;
+			case (CLASS_GOAL):
+				goal   = (KSGridWorldGoal) value;break;
+			case(CLASS_BLOCK):
+				blocks = (List<KSGridWorldBlock>)value;break;
+		}
+        return this;
     }
 
 	@Override
@@ -141,15 +142,16 @@ public class KSGridWorldState implements MutableOOState {
     //I'm letting this return null if goal is null, just because
     //likely burlap will pick up on the goal key regardless of state
 	public Object get(Object key) {
-	    if(key.equals(KSGridWorldAgent.CLASS_NAME))
-	        return agent;
-	    else if(key.equals(KSGridWorldGoal.CLASS_NAME))
-	        return goal;
-	    else if(key.equals(KSGridWorldGoal.CLASS_NAME))
-	        return blocks;
-	    //yet another null
-		return null;
-		//throw new ObjectNotFoundException("key given not in state keys");
+        String immutableKey = (String)key;
+        switch(immutableKey) {
+            case(CLASS_AGENT):
+                return agent;
+            case (CLASS_GOAL):
+                return goal;
+            case(CLASS_BLOCK):
+                return blocks;
+        }
+		throw new ObjectNotFoundException("key: "+(immutableKey)+" given not in state keys");
 	}
 
 	@Override
@@ -157,7 +159,7 @@ public class KSGridWorldState implements MutableOOState {
 	    List<KSGridWorldBlock> newblocks = new ArrayList<>();
 	    for(KSGridWorldBlock b : blocks)
 	        newblocks.add(b.copy());
-		return new KSGridWorldState(agent.copy(),newblocks,goal.copy());
+		return new KSGridWorldState(agent.copy(), newblocks, goal.copy());
 	}
 
 	@Override
