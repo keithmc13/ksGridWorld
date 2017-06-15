@@ -15,7 +15,8 @@ public class KSGStateConditionTest implements StateConditionTest {
 		//some KSGStateConditionTest fields here
 	}
 	
-	public static boolean satisfies(State s) {
+	@Override
+	public boolean satisfies(State s) {
 		
 		/*
 		 * Goal g = s.getGoal;
@@ -24,15 +25,22 @@ public class KSGStateConditionTest implements StateConditionTest {
 		 * if g.y = agent. y
 		 */
 		KSGridWorldGoal location;
-		
 		//if agent is in the goal
-		if(/*agent x coordinate is same as goal x coordinate*/){
-			if(/*if agent y coordinate is same as goal*/){
+		KSGridWorldAgent ksa;
+		
+		if( ksa.getX() == location.getX()/*agent x coordinate is same as goal x coordinate*/) {
+			if( ksa.getY() == location.getY()/*if agent y coordinate is same as goal*/){
+				//agent is at the goal
+				return true;
 			}
 		}
 		
+		//if not just return false
 		else{
 			return false;
 		}
+		
+		//default to false
+		return false;
 	}
 }
