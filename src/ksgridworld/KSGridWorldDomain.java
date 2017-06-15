@@ -47,12 +47,11 @@ public class KSGridWorldDomain implements DomainGenerator {
 
 	public static final String ATT_X = "x";
 	public static final String ATT_Y = "y";
+	public static final String ATT_C = "color";
 
-	//TODO get rid of deprecated keys and add new ones
-	public static final String ATT_DIR = "direction";
-	
 	public static final String CLASS_AGENT = "agent";
 	public static final String CLASS_BLOCK = "block";
+	public static final String CLASS_GOAL = "goal";
 	
 	public static final String ACTION_NORTH = "north";
 	public static final String ACTION_SOUTH = "south";
@@ -140,20 +139,6 @@ public class KSGridWorldDomain implements DomainGenerator {
 	 * -Goal <X, Y, Color>
 	 * 
 	 */
-
-
-
-	public static class KSRF implements RewardFunction {
-
-
-		@Override
-		public double reward(State state, Action action, State state1) {
-			//TODO implement
-			return 0;
-		}
-	}
-
-
 
 	public static class KSTF implements TerminalFunction {
 
