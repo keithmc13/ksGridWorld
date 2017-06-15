@@ -30,17 +30,18 @@ public class KSModel implements FullStateModel {
             case (ACTION_EAST): dir = 2;break;
             case (ACTION_SOUTH):dir = 3;break;
             case (ACTION_WEST): dir = 4;break;
-            default:dir =0;
+            default: throw new RuntimeException("Unknown action name");
         }
         vec direction = new vec(dir);
         KSGridWorldAgent agent = (KSGridWorldAgent)KSstate.get(CLASS_AGENT);
         pos agentPosition = new pos(agent.getX(), agent.getY());
         pos potentialPosition = move(agentPosition, direction);
-
+        // pick final position based on whether movement makes sense
         pos finalPosition =
                 /*KSGStateConditionTest(KSstate)||*/
                 blockAtLocation(KSstate, potentialPosition) ?
                         potentialPosition : agentPosition;
+
         KSGridWorldState newState = KSstate.copy();
         newState.set(CLASS_AGENT, new KSGridWorldAgent(agent.name(),
                      finalPosition.x, finalPosition.y));
@@ -51,6 +52,7 @@ public class KSModel implements FullStateModel {
     public pos move(pos loc, vec dir){
         return loc.transform(dir);
     }
+
     //TODO write this method more fully for stochasticity
     @Override
     public State sample(State state, Action action) {
@@ -87,11 +89,12 @@ public class KSModel implements FullStateModel {
             this.yv = yv;
         }
     }
+
     public boolean blockAtLocation(KSGridWorldState state, pos position){
         return blockAtLocation(state, position.x, position.y);
     }
     public boolean blockAtLocation(KSGridWorldState state, int x, int y) {
-        for (ObjectInstance o : state.objectsOfClass(KSGridWorldBlock.CLASS_NAME))
+        for (ObjectInstance o : state.objectsOfClass(CLASS_BLOCK))
             if (o instanceof KSLocalObject) {
                 KSLocalObject s = (KSLocalObject) o;
                 if (s.getX() == x && s.getY() == y)

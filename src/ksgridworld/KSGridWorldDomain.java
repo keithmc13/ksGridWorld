@@ -36,6 +36,8 @@ import burlap.mdp.singleagent.oo.OOSADomain;
 import burlap.shell.visual.VisualExplorer;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
 import burlap.visualizer.Visualizer;
+import ksgridworld.state.KSGridWorldAgent;
+import ksgridworld.state.KSGridWorldState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +60,8 @@ public class KSGridWorldDomain implements DomainGenerator {
 	public static final String ACTION_EAST = "east";
 	public static final String ACTION_WEST = "west";
 	
+	public static final String VAR_SUCCESS = "success";
+	public static final String VAR_ILLEGAL = "illegal";
 	/*
 	 * In case we add diagonal directional movements
 	 * 
@@ -140,14 +144,16 @@ public class KSGridWorldDomain implements DomainGenerator {
 	 * 
 	 */
 
-	public static class KSTF implements TerminalFunction {
-
-
-		@Override
-		public boolean isTerminal(State state) {
-			//TODO implement
-			return false;
-		}
+	public static boolean isGoal(State s) {
+		KSGridWorldAgent agent = ((KSGridWorldState)s).getAgent();
+		if (agent == null || agent.get(VAR_SUCCESS) == null) { return false; }
+		return (Boolean) agent.get(VAR_SUCCESS);
+	}
+	
+	public static boolean isFailure(State s) {
+		KSGridWorldAgent agent = ((KSGridWorldState)s).getAgent();
+		if (agent == null || agent.get(VAR_ILLEGAL) == null) { return false; }
+		return (Boolean) agent.get(VAR_ILLEGAL);
 	}
 	
 }
