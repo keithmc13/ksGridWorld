@@ -24,9 +24,11 @@ public class KSGStateConditionTest implements StateConditionTest {
 		 * if g.x = agent.x
 		 * if g.y = agent. y
 		 */
-		KSGridWorldGoal location;
+	
+		
+		KSGridWorldGoal location = null;
 		//if agent is in the goal
-		KSGridWorldAgent ksa;
+		KSGridWorldAgent ksa = null;
 		
 		if( ksa.getX() == location.getX()/*agent x coordinate is same as goal x coordinate*/) {
 			if( ksa.getY() == location.getY()/*if agent y coordinate is same as goal*/){

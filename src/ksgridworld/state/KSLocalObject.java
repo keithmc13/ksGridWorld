@@ -11,6 +11,11 @@ import java.util.List;
  */
 public abstract class KSLocalObject extends MutableObject {
     protected String name;
+    
+    protected KSLocalObject(){
+    	
+    }
+    
     protected KSLocalObject(String name, int x, int y) {
         this.name = name;
         super.set(KSGridWorldDomain.ATT_X, x);

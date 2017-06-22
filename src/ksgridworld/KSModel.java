@@ -23,7 +23,8 @@ public class KSModel implements FullStateModel {
     @Override
     public List<StateTransitionProb> stateTransitions(State state, Action action) {
         KSGridWorldState KSstate = (KSGridWorldState)state;
-        //TODO write this method more fully for stochasticity
+        KSGStateConditionTest goalTest = new KSGStateConditionTest();
+        //TODO write this method more fully for stochastic model
         int dir;
         switch(action.actionName()) {
             case (ACTION_NORTH):dir = 1;break;
@@ -38,8 +39,7 @@ public class KSModel implements FullStateModel {
         pos potentialPosition = move(agentPosition, direction);
         // pick final position based on whether movement makes sense
         pos finalPosition =
-                /*KSGStateConditionTest(KSstate)||*/
-                blockAtLocation(KSstate, potentialPosition) ?
+        		goalTest.satisfies(KSstate) || blockAtLocation(KSstate, potentialPosition) ?
                         potentialPosition : agentPosition;
 
         KSGridWorldState newState = KSstate.copy();

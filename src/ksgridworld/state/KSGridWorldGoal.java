@@ -8,6 +8,9 @@ public class KSGridWorldGoal extends KSLocalObject {
     public static final String CLASS_NAME = "KSGoal";
     public static final String ATTR_COLOR = "color";
 
+    public KSGridWorldGoal() {
+    }
+    
     public KSGridWorldGoal(String name, int x, int y, String color){
         super(name, x, y);
         super.set(ATTR_COLOR, color);

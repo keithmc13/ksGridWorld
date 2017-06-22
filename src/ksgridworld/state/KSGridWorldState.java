@@ -4,6 +4,7 @@ import burlap.mdp.core.oo.state.MutableOOState;
 import burlap.mdp.core.oo.state.OOStateUtilities;
 import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.oo.state.exceptions.UnknownClassException;
+import ksgridworld.state.KSGridWorldAgent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,5 +167,9 @@ public class KSGridWorldState implements MutableOOState {
     public String toString(){
 	    return OOStateUtilities.ooStateToString(this);
     }
+	
+	public KSGridWorldAgent getAgent() {
+		return agent;
+	}
 
 }
