@@ -158,8 +158,6 @@ public class KSGridWorldDomain implements DomainGenerator {
 				new UniversalActionType(ACTION_EAST),
 				new UniversalActionType(ACTION_WEST));
 		
-		KSModel ksgmodel = new KSModel();
-		
 		
 		if(rf == null){
 			
@@ -170,8 +168,13 @@ public class KSGridWorldDomain implements DomainGenerator {
 			
 			tf = new NullTermination();
 		}
-
-		return  ksdomain;
+		
+		KSModel ksgmodel = new KSModel();
+		
+		FactoredModel fmodel = new FactoredModel(ksgmodel, rf, tf);
+		ksdomain.setModel(fmodel);
+		
+		return ksdomain;
 	}
 	
 	
@@ -202,16 +205,24 @@ public class KSGridWorldDomain implements DomainGenerator {
 
 
 	public OOState getInitialState(int x, int y) {
-		// TODO Finish adding in all of the 
-		KSGridWorldState s = new KSGridWorldState(null, null, null);
+		// TODO Set up initial state
 		
+		KSGridWorldAgent agent = new KSGridWorldAgent(CLASS_AGENT, x, y);
+        List<KSGridWorldBlock> blocks = new ArrayList<>(Arrays.asList());
+		//KSGridWorldBlock block = new KSGridWorldBlock(CLASS_BLOCK, 4, 4);
+        KSGridWorldGoal goal = new KSGridWorldGoal(CLASS_GOAL, 2, 3, "red");
 		
-		s.addObject(new KSGridWorldBlock("block0", y, y));
-		s.addObject(new KSGridWorldBlock("block1", y, y));
-		s.addObject(new KSGridWorldBlock("block2", y, y));
-		s.addObject(new KSGridWorldBlock("block3", y, y));
-		s.addObject(new KSGridWorldBlock("block4", y, y));
+		KSGridWorldState s = new KSGridWorldState(agent, blocks, goal);
 		
+		//need to add in the objects as necessary
+		s.addObject(new KSGridWorldBlock("block0", 0, 2));
+		s.addObject(new KSGridWorldBlock("block1", 1, 2));
+		s.addObject(new KSGridWorldBlock("block2", 2, 2));
+		s.addObject(new KSGridWorldBlock("block3", 3, 0));
+		s.addObject(new KSGridWorldBlock("block4", 2, 4));
+		s.addObject(new KSGridWorldBlock("block5", 1, 3));
+		//s.addObject(new KSGridWorldAgent("overallAgent", 1, 0));
+		//s.addObject(new KSGridWorldGoal ("overallGoal", 2, 3, "red"));
 		
 		return s;
 	}

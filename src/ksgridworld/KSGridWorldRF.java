@@ -30,9 +30,9 @@ public class KSGridWorldRF extends GoalBasedRF {
 	}
 	
 	@Override
-	public double reward(State s, Action a, State sprime) {
-		double r = super.reward(s, a, sprime);
-		if (s.equals(sprime))
+	public double reward(State s, Action a, State s_prime) {
+		double r = super.reward(s, a, s_prime);
+		if (s.equals(s_prime))
 			r += no_opReward;
 		else
 			r += moveReward;

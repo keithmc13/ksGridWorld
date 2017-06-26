@@ -6,6 +6,7 @@ import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.common.GoalBasedRF;
 import ksgridworld.KSGridWorldDomain;
 import ksgridworld.state.KSGridWorldGoal;
+import ksgridworld.state.KSGridWorldState;
 import ksgridworld.state.KSGridWorldAgent;
 
 public class KSGStateConditionTest implements StateConditionTest {
@@ -17,18 +18,14 @@ public class KSGStateConditionTest implements StateConditionTest {
 	
 	@Override
 	public boolean satisfies(State s) {
-		
-		/*
-		 * Goal g = s.getGoal;
-		 * check if the agent is at the goal
-		 * if g.x = agent.x
-		 * if g.y = agent. y
-		 */
+		//checks if the agent is in the goal
 	
-		
-		KSGridWorldGoal location = null;
+		//create a state s
+		KSGridWorldState state = (KSGridWorldState) s;
+		//instantiate a location and agent object
+		KSGridWorldGoal location = (KSGridWorldGoal) state.get(KSGridWorldDomain.CLASS_GOAL);
 		//if agent is in the goal
-		KSGridWorldAgent ksa = null;
+		KSGridWorldAgent ksa = (KSGridWorldAgent) state.get(KSGridWorldDomain.CLASS_AGENT);
 		
 		if( ksa.getX() == location.getX()/*agent x coordinate is same as goal x coordinate*/) {
 			if( ksa.getY() == location.getY()/*if agent y coordinate is same as goal*/){

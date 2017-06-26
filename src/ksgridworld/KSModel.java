@@ -6,12 +6,14 @@ import burlap.mdp.core.action.Action;
 import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.model.statemodel.FullStateModel;
+//import burlap.mdp.singleagent.model.FactoredModel;
 import ksgridworld.state.KSGridWorldAgent;
 import ksgridworld.state.KSGridWorldBlock;
 import ksgridworld.state.KSGridWorldState;
 import ksgridworld.state.KSLocalObject;
 import static ksgridworld.KSGridWorldDomain.*;
 
+//import java.lang.Object;
 import java.util.Collections;
 import java.util.List;
 
