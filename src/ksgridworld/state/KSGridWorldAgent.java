@@ -1,9 +1,10 @@
 package ksgridworld.state;
 
+import ksgridworld.KSGridWorldDomain;
 
 public class KSGridWorldAgent extends KSLocalObject {
     //TODO move the classname to domain
-    public static final String CLASS_NAME = "KSAgent";
+    //public static final String CLASS_NAME = "KSAgent";
 
     public KSGridWorldAgent(String name, int x, int y){
         super(name, x, y);
@@ -11,7 +12,7 @@ public class KSGridWorldAgent extends KSLocalObject {
 
     @Override
     public String className() {
-        return CLASS_NAME;
+        return KSGridWorldDomain.CLASS_AGENT;
     }
 
     @Override

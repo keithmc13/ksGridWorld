@@ -9,9 +9,9 @@ import ksgridworld.state.KSGridWorldGoal;
 import ksgridworld.state.KSGridWorldState;
 import ksgridworld.state.KSGridWorldAgent;
 
-public class KSGStateConditionTest implements StateConditionTest {
+public class KSGoalConditionTest implements StateConditionTest {
 	
-	public KSGStateConditionTest(){
+	public KSGoalConditionTest(){
 		
 		//some KSGStateConditionTest fields here
 	}

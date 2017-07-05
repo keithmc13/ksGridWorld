@@ -22,86 +22,131 @@ import java.util.List;
  * Created by sparr on 6/13/17.
  */
 public class KSModel implements FullStateModel {
-    @Override
-    public List<StateTransitionProb> stateTransitions(State state, Action action) {
-        KSGridWorldState KSstate = (KSGridWorldState)state;
-        KSGStateConditionTest goalTest = new KSGStateConditionTest();
-        //TODO write this method more fully for stochastic model
-        int dir;
-        switch(action.actionName()) {
-            case (ACTION_NORTH):dir = 1;break;
-            case (ACTION_EAST): dir = 2;break;
-            case (ACTION_SOUTH):dir = 3;break;
-            case (ACTION_WEST): dir = 4;break;
-            default: throw new RuntimeException("Unknown action name");
-        }
-        vec direction = new vec(dir);
-        KSGridWorldAgent agent = (KSGridWorldAgent)KSstate.get(CLASS_AGENT);
-        pos agentPosition = new pos(agent.getX(), agent.getY());
-        pos potentialPosition = move(agentPosition, direction);
-        // pick final position based on whether movement makes sense
-        pos finalPosition =
-        		goalTest.satisfies(KSstate) || blockAtLocation(KSstate, potentialPosition) ?
-                        potentialPosition : agentPosition;
+	
+	protected int minX;
+	protected int minY;
+	protected int maxX;
+	protected int maxY;
+	protected double [][] transitionProbs;
+	
+	public KSModel() {
+		
+	}
+	
+	public KSModel(int minX, int minY, int maxX, int maxY, int numActions) {
+		this.minX = minX;
+		this.minY = minY;
+		this.maxX = maxX;
+		this.maxY = maxY;
+		this.transitionProbs = new double[numActions][numActions];
+		for(int i = 0; i < numActions; i++){
+			for(int j = 0; j < numActions; j++){
+				double p = i != j ? 0 : 1;
+				transitionProbs[i][j] = p;
+			}
+		}
+	}
+	
+	
+	@Override
+	public List<StateTransitionProb> stateTransitions(State s, Action a){
+		return FullStateModel.Helper.deterministicTransition(this, s, a);
+	}
 
-        KSGridWorldState newState = KSstate.copy();
-        newState.set(CLASS_AGENT, new KSGridWorldAgent(agent.name(),
-                     finalPosition.x, finalPosition.y));
-        StateTransitionProb stp = new StateTransitionProb(newState, 1.0);
+	@Override
+	public State sample(State s, Action a){
+		
+		s = s.copy();
+		String actionName = a.actionName();
+		if(actionName.equals(KSGridWorldDomain.ACTION_NORTH) || actionName.equals(KSGridWorldDomain.ACTION_SOUTH)
+		||actionName.equals(KSGridWorldDomain.ACTION_EAST) || actionName.equals(KSGridWorldDomain.ACTION_WEST)){
+			
+			return move(s, actionName);
+		}
+		
+		else{
+			throw new RuntimeException("Unknown action" + actionName);
+		}
+		
+	}
+	
+	public State move(State s, String actionName){
+		
+		KSGridWorldState kws = (KSGridWorldState)s;
+		KSGridWorldAgent agent = kws.getAgent();
+		int direction = actionDir(actionName);
+		int curX = (Integer) agent.get(KSGridWorldDomain.ATT_X);
+		int curY = (Integer) agent.get(KSGridWorldDomain.ATT_Y);
+		//first get change in x and y from direction using 0: north; 1: south; 2:east; 3: west
+		int xdelta = 0;
+		int ydelta = 0;
+		if(direction == 0){
+			ydelta = 1;
+		} else if(direction == 1){
+			ydelta = -1;
+		} else if(direction == 2){
+			xdelta = 1;
+		} else{
+			xdelta = -1;
+		}
+		int nx = curX + xdelta;
+		int ny = curY + ydelta;
+		//int nbx = nx;
+		//int nby = ny;
 
-        return Collections.singletonList(stp);
-    }
-    public pos move(pos loc, vec dir){
-        return loc.transform(dir);
-    }
-
-    //TODO write this method more fully for stochasticity
-    @Override
-    public State sample(State state, Action action) {
-        //simply grab the only state in the list
-        return stateTransitions(state, action).get(0).s;
-    }
-    private class pos{
-        public final int x;
-        public final int y;
-        public pos(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-        public pos transform(vec d){
-            return new pos(this.x+d.xv, this.y+d.yv);
-        }
-    }
-
-    private class vec{
-        public final int xv;
-        public final int yv;
-        public vec(int v){
-            int tyv, txv;
-            //v = 3(south)
-            txv = v%2==1 ? 0 : 1;
-            tyv = txv==0 ? 1 : 0;
-            //txv, tyv = 0, 1
-            yv = (v<3) ? tyv : -tyv;
-            xv = (v<3) ? txv : -txv;
-            //txv, tyv = 0, -1 like it should be
-        }
-        public vec(int xv, int yv){
-            this.xv = xv;
-            this.yv = yv;
-        }
-    }
-
-    public boolean blockAtLocation(KSGridWorldState state, pos position){
-        return blockAtLocation(state, position.x, position.y);
-    }
-    public boolean blockAtLocation(KSGridWorldState state, int x, int y) {
-        for (ObjectInstance o : state.objectsOfClass(CLASS_BLOCK))
-            if (o instanceof KSLocalObject) {
-                KSLocalObject s = (KSLocalObject) o;
-                if (s.getX() == x && s.getY() == y)
-                    return true;
-            }
-        return false;
-    }
+		boolean agentCanMove = false;
+		
+		//be sure that the width is less than the new x
+		//and the height is less than the new y
+		if(kws.getWidth() > nx && kws.getHeight() > ny && nx >= 0 && ny >= 0){
+			//agent is able to move within the boundaries
+			agentCanMove = true;
+			//check if the agent's coordinates are the same as a block object
+			//if so, agentCanMove is false
+			List<ObjectInstance> blocks = kws.objectsOfClass(CLASS_BLOCK);
+			for(ObjectInstance block: blocks){
+				KSGridWorldBlock b = (KSGridWorldBlock) block;
+				if(nx == b.getX()){
+					if(ny == b.getY()){
+						agentCanMove = false;
+						break;
+					}
+				}
+				
+			}
+			
+		}
+		
+			
+		
+		KSGridWorldAgent nAgent = kws.touchAgent();
+		if (agentCanMove){
+			
+			nAgent.set(KSGridWorldDomain.ATT_X, nx);
+			nAgent.set(KSGridWorldDomain.ATT_Y, ny);
+		}
+		
+		return s;
+	}
+	
+	
+	protected static int actionDir(String actionName) {
+		int direction = -1;
+		if (actionName.equals(KSGridWorldDomain.ACTION_NORTH)) {
+			direction = 0;
+		} else if (actionName.equals(KSGridWorldDomain.ACTION_SOUTH)) {
+			direction = 1;
+		} else if (actionName.equals(KSGridWorldDomain.ACTION_EAST)) {
+			direction = 2;
+		} else if (actionName.equals(KSGridWorldDomain.ACTION_WEST)) {
+			direction = 3;
+		} else {
+			throw new RuntimeException("ERROR: not a valid direction for " + actionName);
+		}
+		return direction;
+	}
+	
+	protected int actionDir(Action a){
+		return actionDir(a.actionName());
+	}
 }

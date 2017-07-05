@@ -18,17 +18,48 @@ public class KSGridWorldState implements MutableOOState {
 	private KSGridWorldAgent agent;
 	private List<KSGridWorldBlock> blocks;
 	private KSGridWorldGoal goal;
+	
+	private int width;
+	private int height;
 
     private static final List<Object> keys=
 			Arrays.asList(CLASS_GOAL, CLASS_AGENT, CLASS_BLOCK);
 
 	public KSGridWorldState(KSGridWorldAgent agent,
                             List<KSGridWorldBlock> blocks,
-                            KSGridWorldGoal goal){
+                            KSGridWorldGoal goal, int width, int height){
 		this.agent = agent;
 		this.blocks = blocks;
 		this.goal = goal;
+		this.width = width;
+		this.height = height;
+		
 	}
+
+	
+
+	public int getWidth() {
+		return width;
+	}
+
+
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+
+
+	public int getHeight() {
+		return height;
+	}
+
+
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
 
 
 	@Override
@@ -160,7 +191,7 @@ public class KSGridWorldState implements MutableOOState {
 	    List<KSGridWorldBlock> newblocks = new ArrayList<>();
 	    for(KSGridWorldBlock b : blocks)
 	        newblocks.add(b.copy());
-		return new KSGridWorldState(agent.copy(), newblocks, goal.copy());
+		return new KSGridWorldState(agent.copy(), newblocks, goal.copy(), width, height);
 	}
 
 	@Override
@@ -169,6 +200,14 @@ public class KSGridWorldState implements MutableOOState {
     }
 	
 	public KSGridWorldAgent getAgent() {
+		return agent;
+	}
+
+
+
+	public KSGridWorldAgent touchAgent() {
+		if (agent == null) return null;
+		this.agent = agent.copy();
 		return agent;
 	}
 

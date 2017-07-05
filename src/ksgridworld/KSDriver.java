@@ -18,7 +18,7 @@ import ksgridworld.state.KSGridWorldGoal;
 import ksgridworld.state.KSGridWorldState;
 import ksgridworld.KSGridWorldRF;
 import ksgridworld.KSGridWorldDomain;
-import ksgridworld.KSGStateConditionTest;
+import ksgridworld.KSGoalConditionTest;
 
 /**
  * Created by sparr on 6/13/17.
@@ -40,7 +40,7 @@ public class KSDriver {
 		HashableStateFactory hashingFactory;
 		Environment env;
 
-		KSGStateConditionTest atGoal = new KSGStateConditionTest();
+		KSGoalConditionTest atGoal = new KSGoalConditionTest();
 		double rewardGoal = 1000;
 		double rewardDefault = 0;
 		double rewardNoop = 0;
@@ -54,9 +54,9 @@ public class KSDriver {
 		goalCondition = new KSGridWorldGoal();
 		rf = new KSGridWorldRF(atGoal, rewardGoal, rewardDefault, rewardNoop, rewardMove);
 		tf = new KSGridWorldTF();
-		KSGridWorldDomain gen = new KSGridWorldDomain();
-		gen.setRf(rf);
-		gen.setTf(tf);
+		KSGridWorldDomain gen = new KSGridWorldDomain(rf, tf, 5, 5);
+		//gen.setRf(rf);
+		//gen.setTf(tf);
 		domain = gen.generateDomain();
 //		CleanupGoalDescription[] goals = new CleanupGoalDescription[]{
 //				new CleanupGoalDescription(new String[]{"block0", "room1"}, domain.propFunction(PF_BLOCK_IN_ROOM)),
@@ -83,7 +83,7 @@ public class KSDriver {
 		double qInit = 0;
 		double learningRate = 0.01;
 		int nEpisodes = 100;
-		int maxEpisodeSize = 1;
+		int maxEpisodeSize = 100;
 		int writeEvery = 1;
 		
 		LearningAgent agent = new QLearning(domain, gamma, hashingFactory, qInit, learningRate, maxEpisodeSize);
@@ -94,7 +94,8 @@ public class KSDriver {
 			}
 			System.out.println(i + ": " + e.maxTimeStep());
 			System.out.println(i + ": " + e.actionSequence);
-			System.out.println(i + ": " + e.stateSequence);
+			System.out.println(i + ": " + e.rewardSequence);
+			//System.out.println(i + ": " + e.stateSequence);
 			env.resetEnvironment();
 		}
 		/*

@@ -76,6 +76,9 @@ public class KSGridWorldDomain implements DomainGenerator {
 	
 	public static final String VAR_SUCCESS = "success";
 	public static final String VAR_ILLEGAL = "illegal";
+	
+	public int width;
+	public int height;
 	/*
 	 * In case we add diagonal directional movements
 	 * 
@@ -95,7 +98,10 @@ public class KSGridWorldDomain implements DomainGenerator {
 	//terminal function
 	private TerminalFunction tf;
 	
-	public KSGridWorldDomain(RewardFunction rf, TerminalFunction tf){
+	public KSGridWorldDomain(RewardFunction rf, TerminalFunction tf, int width, int height){
+		
+		this.width = width;
+		this.height = height;
 		
 		this.rf = rf;
 		this.tf = tf;
@@ -127,19 +133,14 @@ public class KSGridWorldDomain implements DomainGenerator {
 	 */
 
 	public static boolean isGoal(State s) {
-		KSGridWorldAgent agent = ((KSGridWorldState)s).getAgent();
-		if (agent == null || agent.get(VAR_SUCCESS) == null) { return false; }
-		return (Boolean) agent.get(VAR_SUCCESS);
+		KSGoalConditionTest goal = new KSGoalConditionTest();
+		return goal.satisfies(s);
 	}
 	
 	public static boolean isFailure(State s) {
-		KSGridWorldAgent agent = ((KSGridWorldState)s).getAgent(); 
-		if (agent == null || agent.get(VAR_ILLEGAL) == null) { return false; }
-		return (Boolean) agent.get(VAR_ILLEGAL);
+		return false;
 	}
 	
-	
-	public KSGridWorldDomain(){};
 	
 	//generate Object-Oriented Single Agent Domain
 	@Override
@@ -212,7 +213,7 @@ public class KSGridWorldDomain implements DomainGenerator {
 		//KSGridWorldBlock block = new KSGridWorldBlock(CLASS_BLOCK, 4, 4);
         KSGridWorldGoal goal = new KSGridWorldGoal(CLASS_GOAL, 2, 3, "red");
 		
-		KSGridWorldState s = new KSGridWorldState(agent, blocks, goal);
+		KSGridWorldState s = new KSGridWorldState(agent, blocks, goal, width, height);
 		
 		//need to add in the objects as necessary
 		s.addObject(new KSGridWorldBlock("block0", 0, 2));

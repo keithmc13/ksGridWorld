@@ -4,21 +4,23 @@ package ksgridworld.state;
 import java.util.Arrays;
 import java.util.List;
 
+import ksgridworld.KSGridWorldDomain;
+
 public class KSGridWorldGoal extends KSLocalObject {
-    public static final String CLASS_NAME = "KSGoal";
-    public static final String ATTR_COLOR = "color";
+    //public static final String CLASS_NAME = "KSGoal";
+    //public static final String ATTR_COLOR = "color";
 
     public KSGridWorldGoal() {
     }
     
     public KSGridWorldGoal(String name, int x, int y, String color){
         super(name, x, y);
-        super.set(ATTR_COLOR, color);
+        super.set(KSGridWorldDomain.ATT_C, color);
     }
     private static List<Object> keys = Arrays.asList(
             KSLocalObject.keys.get(0), //X key
             KSLocalObject.keys.get(1), //Y key
-            ATTR_COLOR
+            KSGridWorldDomain.ATT_C
     );
     @Override
     public List<Object> variableKeys() {
@@ -27,7 +29,7 @@ public class KSGridWorldGoal extends KSLocalObject {
 
     @Override
     public String className() {
-        return CLASS_NAME;
+        return KSGridWorldDomain.CLASS_GOAL;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class KSGridWorldGoal extends KSLocalObject {
     }
 
     protected String getColor(){
-        return (String)super.get(ATTR_COLOR);
+        return (String)super.get(KSGridWorldDomain.ATT_C);
     }
 
     @Override
